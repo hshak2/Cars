@@ -6,7 +6,7 @@ module.exports = {
         try{
             const carItems = await Car.find({userId:req.user.id})
             const carLeft = await Car.countDocuments({userId:req.user.id,completed: false})
-            res.render('todos.ejs', {vehicles: carItems, left: carLeft, user: req.user})
+            res.render('cars.ejs', {vehicles: carItems, left: carLeft, user: req.user})
         }catch(err){
             console.log(err)
         }

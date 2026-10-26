@@ -1,16 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const todosController = require('../controllers/cars') 
+const carController = require('../controllers/cars') 
 const { ensureAuth } = require('../middleware/auth')
 
-router.get('/', ensureAuth, todosController.getCars)
+router.get('/', ensureAuth, carController.getCars)
 
-router.post('/addCar', todosController.addCar)
+router.post('/addCar', carController.addCar)
 
-router.put('/markComplete', todosController.markComplete)
+router.put('/markComplete', carController.markComplete)
 
-router.put('/markIncomplete', todosController.markIncomplete)
+router.put('/markIncomplete', carController.markIncomplete)
 
-router.delete('/deleteTodo', todosController.deleteTodo)
+router.delete('/deleteTodo', carController.deleteTodo)
 
 module.exports = router

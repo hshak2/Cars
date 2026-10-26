@@ -2,6 +2,77 @@ const passport = require('passport')
 const validator = require('validator')
 const User = require('../models/User')
 
+
+
+//   exports.getLoginPage = async (req, res) => {
+//     res.render('login');
+//   },
+  
+//   exports.getRegisterPage = async (req, res) => {
+//     res.render('signup');
+//   },
+  
+//   // authenticate with passport, success:login, (see passport config for Local Strat and [de]serialization)
+//   exports.login = (req,res,next) => {
+//     passport.authenticate('local', (err, user, info) => {
+//       if (err) return next(err);
+//       if (!user) {
+//         return res.status(401).json({message: info.message || `check yo'self`});
+//       }
+
+//       req.login(user, (err) => {
+//         if (err) return next(err);
+//         req.session.optOut = user.optOut;
+//         return res.status(200).json({redirect:'/cars'});
+//       });
+//     })(req, res, next);
+//   },
+
+//   exports.logout = (req,res,next) => {
+//     req.logout((e) => {
+//       if (e) return next(e);
+//       res.redirect('/');
+//     })
+//   },
+
+//   // collect user data and register, call login with valid info
+//   exports.registerNewUser = async (req,res) => {
+//     const {
+//       email,
+//       password,
+//       username
+//     } = req.body;
+
+//     const validChars = new Set(' abcdefghijklmnopqrstuvwxyz0123456789,./+=-!@#$%^&*_');
+//     const nameUsesValidChars = username.toLowerCase().split('').every(char => validChars.has(char));
+//     const nameIsProperLength = 3 <= username.trim().length && username.trim().length <= 40;
+//     const passwordUsesValidChars = password.toLowerCase().split('').every(char => validChars.has(char));
+//     const passwordIsValidLength = password.trim().length >= 8 && password.trim().length <= 20;
+
+//     const validUsername = nameUsesValidChars && nameIsProperLength;
+//     const validPassword = passwordUsesValidChars && passwordIsValidLength;
+
+//     if (!validUsername) return res.status(400).json({message:'invalid username'});
+//     if (!validPassword) return res.status(400).json({message: 'invalid password'});
+
+//     try {
+//       const user = await User.create({email,username,password});
+//       req.login(user,(err) => {
+//         if (err) return res.status(500).json({message:"the registration succeeded, but the login failed"});
+//         req.session.optOut = user.optOut;
+//         return res.status(201).json(user)
+//       })
+//     }
+//     catch (e){
+//       let message = e.message;
+//       if (e.code === 11000){
+//         if (e.keyPattern.email) message = 'Email already Registered'
+//         if (e.keyPattern.username) message = 'Username is already Taken'
+//       }
+//       return res.status(400).json({ message })
+//     }
+
+//   }
  exports.getLogin = (req, res) => {
     if (req.user) {
       return res.redirect('/cars')
@@ -74,60 +145,19 @@ const User = require('../models/User')
       password: req.body.password
     })
  
-//    try{
-//    const user = await User.findOne({$or: [
-//       {email: req.body.email},
-//       {userName: req.body.userName}
-//     ]}, (err, existingUser) => {
-//       if (err) { return next(err) }
-//       if (existingUser) {
-//         req.flash('errors', { msg: 'Account with that email address or username already exists.' })
-//         return res.redirect('../signup')
-//       }
-//       user.save(async (err) => {
-//         if (err) { return next(err) }
-//         await req.logIn(user, (err) => {
-//           if (err) {
-//             return next(err)
-//           }
-//           res.redirect('/cars')
-//         })
-//       })
-//     })
-//    }catch (e){
-//           let msg = e.msg;
-//       if (e.code === 11000){
-//         if (e.keyPattern?.email) msg = 'Email already Registered'
-//         if (e.keyPattern.userName) msg = 'Username is already Taken'
-//       }
-//     //   return res.status(400).json({ msg })
-//     next(e)
-//    }
+
 
 try {
     const existingUser = await User.findOne({ email: { $eq: req.body.email } });
 
     if (existingUser) {
-      // Always send login link and generic message if email exists
+//       // Always send login link and generic message if email exists
     //   await sendPasswordlessLoginLinkIfUserExists(existingUser, req);
       return res.redirect('/cars');
     }
 
-    // For passwordless signup, generate a random password
-    // const password = req.body.passwordless ? crypto.randomBytes(16).toString('hex') : req.body.password;
-    // const user = new User({
-    //   email: req.body.email,
-    //   password,
-    // });
 
-    // await user.save();
-
-    // if (req.body.passwordless) {
-    //   await sendPasswordlessSignupLink(user, req);
-    //   return res.redirect('/');
-    // }
-
-    // For regular signup, log the user in
+//     // For regular signup, log the user in
     req.logIn(user, (err) => {
       if (err) {
         return next(err);

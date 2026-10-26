@@ -9,7 +9,7 @@ const logger = require('morgan')
 const cors = require('cors')
 const connectDB = require('./config/database')
 const mainRoutes = require('./routes/main')
-const todoRoutes = require('./routes/cars')
+const carRoutes = require('./routes/cars')
 
 require('dotenv').config({path: './config/.env'})
 
@@ -42,7 +42,7 @@ app.use(flash())
 app.use(cors())
   
 app.use('/', mainRoutes)
-app.use('/cars', todoRoutes)
+app.use('/cars', carRoutes)
  
 app.listen(process.env.PORT, ()=>{
     console.log('Server is running, you better catch it!')

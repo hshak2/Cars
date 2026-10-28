@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
 })
 
 
-// Password hash middleware.
+// // Password hash middleware.
  
  UserSchema.pre('save', function save(next) {
   const user = this
@@ -24,13 +24,24 @@ const UserSchema = new mongoose.Schema({
 })
 
 
-// Helper method for validating user's password.
+// // Helper method for validating user's password.
 
-UserSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch)
-  })
-}
+// UserSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+//   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+//     cb(err, isMatch)
+//   })
+// }
+
+// Helper method for validating password for login by password strategy
+UserSchema.methods.comparePassword = async function comparePassword(candidatePassword, cb) {
+  let isMatch;
+  try {
+    isMatch = await bcrypt.verify(candidatePassword, this.password);
+  } catch (err) {
+    return cb(err);
+  }
+  cb(null, isMatch);
+};
 
 
 module.exports = mongoose.model('User', UserSchema)

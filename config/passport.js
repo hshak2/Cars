@@ -40,11 +40,25 @@
 // })
 
 // export default passport;
+
+
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
 const validator = require('validator');
 
 const User = require('../models/User');
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    return done(null, await User.findById(id));
+  } catch (error) {
+    return done(error);
+  }
+});
 
 passport.use(
   new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
@@ -72,14 +86,14 @@ passport.use(
   }),
 );
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
 
-passport.deserializeUser(async (id, done) => {
-  try {
-    return done(null, await User.findById(id));
-  } catch (error) {
-    return done(error);
-  }
-});
+// passport.deserializeUser(async (id, done) => {
+//   try {
+//     return done(null, await User.findById(id));
+//   } catch (error) {
+//     return done(error);
+//   }
+// });

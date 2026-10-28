@@ -107,16 +107,17 @@ exports.getLogin = (req, res) => {
     })(req, res, next)
   }
   
-  exports.logout = (req, res) => {
-    req.logout(() => {
-      console.log('User has logged out.')
-    })
+exports.logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err)
+
     req.session.destroy((err) => {
-      if (err) console.log('Error : Failed to destroy the session during logout.', err)
-      req.user = null
+      if (err) console.log('Error: Failed to destroy the session during logout.', err)
+      res.clearCookie('connect.sid')
       res.redirect('/')
     })
-  }
+  })
+}
   
   exports.getSignup = (req, res) => {
     if (req.user) {
@@ -137,36 +138,63 @@ exports.getLogin = (req, res) => {
       req.flash('errors', validationErrors)
       return res.redirect('../signup')
     }
-    req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
-  
-    const user = new User({
+      req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
+
+  try {
+    const existingUser = await User.findOne({
+      $or: [{ email: req.body.email }, { userName: req.body.userName }]
+    })
+    if (existingUser) {
+      req.flash('errors', { msg: 'An account with that email or username already exists.' })
+      return res.redirect('/signup')
+    }
+
+    const user = await User.create({
       userName: req.body.userName,
       email: req.body.email,
       password: req.body.password
     })
+
+    req.logIn(user, (err) => {
+      if (err) return next(err)
+      req.flash('success', { msg: 'Success! You are logged in.' })
+      res.redirect('/cars')
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+//     req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
+  
+//     const user = new User({
+//       userName: req.body.userName,
+//       email: req.body.email,
+//       password: req.body.password
+//     })
  
 
 
-try {
-    const existingUser = await User.findOne({ email: { $eq: req.body.email } });
+// try {
+//     const existingUser = await User.findOne({ email: { $eq: req.body.email } });
+//     console.log(existingUser)
 
-    if (existingUser) {
-//       // Always send login link and generic message if email exists
-    //   await sendPasswordlessLoginLinkIfUserExists(existingUser, req);
-      return res.redirect('/cars');
-    }
+//     if (existingUser) {
+// //       // Always send login link and generic message if email exists
+//     //   await sendPasswordlessLoginLinkIfUserExists(existingUser, req);
+//       return res.redirect('/cars');
+//     }
 
 
-//     // For regular signup, log the user in
-    req.logIn(user, (err) => {
-      if (err) {
-        return next(err);
-      }
-      req.flash('success', { msg: 'Success! You are logged in.' });
-      res.redirect('/cars');
-    });
-  } catch (err) {
-    next(err);
-  }
+// //     // For regular signup, log the user in
+//     req.logIn(user, (err) => {
+//       if (err) {
+//         return next(err);
+//       }
+//       req.flash('success', { msg: 'Success! You are logged in.' });
+//       res.redirect('/cars');
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
 
-  }
+//   }

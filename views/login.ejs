@@ -4,23 +4,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="css/twind.css">
 </head>
 <body>
-    <% if (locals.messages.errors) { %>
-        <% messages.errors.forEach( el => { %>
-            <div class="alert alert-danger"><%= el.msg %></div>
-        <% }) %>    
-    <% } %>
-    <% if (locals.messages.info) { %>
-        <% messages.info.forEach( el => { %>
-            <div class="alert alert-danger"><%= el.msg %></div>
-        <% }) %>    
-    <% } %>
-    <form action="/login" method="POST">
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit">
-    </form>
+<main class="flex items-center justify-center h-screen bg-gray-100">
+
+        <form action="/login" method="POST">
+            <div class="flex flex-col justify-center items-center">
+                <span class="mb-3 text-4xl font-bold">Welcome back</span>
+                <span class="font-light text-gray-400 mb-8">
+                    Welcome back! Please enter your details
+                </span>
+            </div>
+
+
+            <div class="bg-white w-96 p-6 rounded shadow-sm">
+
+            <div class="w-full text-center text-red-600 p-2 rounded-lg mb-6">
+            <% if (locals.messages.errors) { %>
+            <% messages.errors.forEach( el => { %>
+                <div class="alert alert-danger"><%= el.msg %></div>
+            <% }) %>    
+            <% } %>
+            <% if (locals.messages.info) { %>
+            <% messages.info.forEach( el => { %>
+                <div class="alert alert-danger"><%= el.msg %></div>
+            <% }) %>    
+            <% } %>
+            </div>
+                <label class="text-gray-700" for="email">Email</label>
+                <input class="w-full py-2 bg-gray-50 text-gray-500 px-1 outline-none mb-4" type="email" name="email" placeholder="Email">
+                <label class="text-black" for="password">Password</label>
+                <input class="w-full py-2 bg-gray-50 text-gray-500 px-1 outline-none mb-4" type="password" name="password" placeholder="Password">
+                <button type="submit" class="w-full bg-black text-white p-2 rounded-lg mb-6 hover:bg-white hover:text-black hover:border hover:border-gray-300">Submit</button>
+                <div class="text-center text-gray-400">
+                    Dont'have an account?
+                    <span class="font-bold text-black"><a href="/signup">Sign up for free</a></span>
+                </div>
+            </div>
+        </form>
+
+
+
+
+
+
+</main>
+
 </body>
 </html>

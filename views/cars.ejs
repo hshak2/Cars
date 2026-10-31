@@ -10,25 +10,42 @@
 </head>
 <body>
     <h1>Todos</h1>
+<div class="container">    
+ 
     <ul>
     <% vehicles.forEach( el => { %>
-            <li class='todoItem' data-id='<%=el._id%>'>
-                <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.todo %></span>
-                <span class='del'> Delete </span>
+
+            <li class='carItem' data-id='<%=el._id%>'>
+                <!-- <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.carItem %></span>
+                <span class='del'> Delete </span> -->
+                <div class="col">
+                <img src="<%= el.imageSrc %>" alt="<%= el.carDesc %>">
+                </div>
+                <p><%= el.carDesc %></p>
+                <h2 class="fg-primary"><%= el.carName %></h2>
+
+
             </li>
     <% }) %>    
     </ul>
 
+</div>
+
     <h2><%= user.userName %> has <%= left %> things left to do.</h2>
 
     <form action="/cars/addCar" method='POST'>
-        <input type="text" placeholder="Enter Todo Item" name='carItem'>
+        <input type="text" placeholder="Car Name" name="carItem">
+        <input type="text" placeholder="Car Image Link" name="carImage">
+        <input type="text" placeholder="Short Car Desc." name="carDesc">
         <input type="submit">
     </form>
 
+ 
     <a href="/logout">Logout</a>
 
+
     <script src="js/main.js"></script>
+    
 </body>
 </html>
 

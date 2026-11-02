@@ -6,32 +6,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your cars</title>
+     <!-- Linking Google fonts for icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete" />
+    <!-- CSS -->
     <link rel="stylesheet" href="css/swiperFiles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <h1>Your cars</h1>
-<div class="container">    
+<div class="container swiper">    
  
-    <ul>
+<div class="card-wrapper">
+        <ul class="card-list swiper-wrapper">
     <% vehicles.forEach( el => { %>
 
-            <li class='carItem' data-id='<%=el._id%>'>
+            <li class='carItem card-item swiper-slide' data-id='<%=el._id%>'>
                 <!-- <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.carItem %></span>
                 <span class='del'> Delete </span> -->
-                <div class="col">
-                <img src="<%= el.imageSrc %>" alt="<%= el.carDesc %>">
-                </div>
-                <p><%= el.carDesc %></p>
-                <h2 class="fg-primary"><%= el.carName %></h2>
+                <a href="#" class="card-link">
+                    <div class="col">
+                    <img src="<%= el.imageSrc %>" alt="<%= el.carName %>" class="card-image">
+                    </div>
+                    <p class="badge"><%= el.imageAlt %></p>
+                    <h2 class="fg-primary card-title"><%= el.carName %></h2>
+                    <button class="card-button material-symbols-outlined">
+delete
+                    </button>
+                </a>
 
 
             </li>
     <% }) %>    
     </ul>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-slide-button swiper-button-prev"></div>
+        <div class="swiper-slide-button swiper-button-next"></div>
+</div>
 
 </div>
 
-    <h2><%= user.userName %> has <%= left %> things left to do.</h2>
+    <h2><%= user.userName %> has <%= left %> cars in their inventory.</h2>
 
     <form action="/cars/addCar" method='POST'>
         <input type="text" placeholder="Car Name" name="carItem">

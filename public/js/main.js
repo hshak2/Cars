@@ -1,19 +1,37 @@
-// import Swiper bundle with all modules installed
-import Swiper from 'swiper/bundle';
+const deleteBtn = document.querySelectorAll('.del')
 
-// import styles bundle
-import 'swiper/css/bundle';
+Array.from(deleteBtn).forEach((el)=>{
+    el.addEventListener('click', deleteCar)
+})
 
-// init Swiper:
-const swiper = new Swiper('.card-wrapper', {
+async function deleteCar(){
+    const carId = this.parentNode.dataset.id
+    try{
+        const response = await fetch('cars/deleteCar', {
+            method: 'delete',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                'todoIdFromJSFile': carId
+            })
+        })
+        const data = await response.json()
+        console.log(data)
+        location.reload()
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+const swiper = new Swiper('.wrapper', {
   loop: true,
   spaceBetween: 30,
 
-  // Pagination bullets
+  // If we need pagination
   pagination: {
     el: '.swiper-pagination',
     clickable: true,
-    dynamicBullets: true
+    dynamicBullets: true,
   },
 
   // Navigation arrows
@@ -22,17 +40,16 @@ const swiper = new Swiper('.card-wrapper', {
     prevEl: '.swiper-button-prev',
   },
 
-  //responsive breakpoints
+  //Responsive breakpoints
   breakpoints: {
     0: {
-        slidesPerView: 1
+      slidesPerView: 1,
     },
     768: {
-        slidesPerView: 2
+      slidesPerView: 2,
     },
     1024: {
-        slidesPerView: 3
-    },
+      slidesPerView: 3,
+    }
   }
 });
-swiper()

@@ -11,6 +11,7 @@ const connectDB = require('./config/database')
 const mainRoutes = require('./routes/main')
 const carRoutes = require('./routes/cars')
 
+
 require('dotenv').config({path: './config/.env'})
 
 // Passport config
@@ -48,3 +49,4 @@ app.listen(process.env.PORT, ()=>{
     console.log('Server is running, you better catch it!')
 })    
 module.exports = passportConfig
+

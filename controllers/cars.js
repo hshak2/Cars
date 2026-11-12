@@ -5,7 +5,7 @@ module.exports = {
         console.log(req.user)
         try{
             const carItems = await Car.find({userId:req.user.id})
-            const carLeft = await Car.countDocuments({userId:req.user.id,completed: false})
+            const carLeft = await Car.countDocuments({userId:req.user.id, completed: false})
             res.render('cars.ejs', {vehicles: carItems, left: carLeft, user: req.user})
         }catch(err){
             console.log(err)
@@ -42,7 +42,7 @@ module.exports = {
             console.log(err)
         }
     },
-    deleteTodo: async (req, res)=>{
+    deleteCar: async (req, res)=>{
         console.log(req.body.todoIdFromJSFile)
         try{
             await Car.findOneAndDelete({_id:req.body.todoIdFromJSFile})

@@ -11,6 +11,6 @@ router.put('/markComplete', carController.markComplete)
 
 router.put('/markIncomplete', carController.markIncomplete)
 
-router.delete('/deleteTodo', carController.deleteTodo)
+router.delete('/deleteCar', carController.deleteCar)
 
 module.exports = router
